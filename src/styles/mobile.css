@@ -1,0 +1,352 @@
+/*
+ * uth-closet — mobile.css
+ * Mobile-only overrides for iOS (Safari + Chrome).
+ * Import AFTER global.css and all component styles.
+ * Desktop (> 768px) is completely untouched.
+ *
+ * Strategy: all React inline styles use !important overrides here,
+ * targeting elements by their structural / data-* selectors.
+ */
+
+/* ─────────────────────────────────────────────────────────────
+   0. VIEWPORT & SAFE-AREA FIX
+   Ensures the page never overflows horizontally and renders
+   at the correct device pixel size on iOS.
+───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  html, body, #root {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  /* Prevent content from ever being wider than screen */
+  * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Allow certain elements to scroll horizontally if needed */
+  table, .table-scroll {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    display: block !important;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   1. NAV BAR — replace tab row with hamburger dropdown
+───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Shrink the nav bar height and padding */
+  nav {
+    height: 60px !important;
+    padding: 0 14px !important;
+    gap: 10px !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 300 !important;
+  }
+
+  /* Logo: slightly smaller on mobile */
+  nav img[alt="Uth Closet"] {
+    height: 38px !important;
+  }
+
+  /* Hide the desktop centre tab row on mobile */
+  nav > div:nth-child(2) {
+    display: none !important;
+  }
+
+  /* Shrink the right-side profile button */
+  /* Hide the text labels in the profile button on very small screens */
+  nav div[style*="profileInfo"] ,
+  nav div[style*="textAlign: 'left'"] {
+    display: none !important;
+  }
+
+  /* School picker — hidden on mobile (available in each page) */
+  nav select {
+    display: none !important;
+  }
+
+  /* ── Mobile hamburger nav ──
+     We inject the mobile nav via a <div id="mobile-nav"> that the
+     mobile-nav.js script creates. Styles here, logic in mobile-nav.js.
+  */
+  #mobile-nav-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px !important;
+    height: 40px !important;
+    background: #F5F4F1 !important;
+    border: 1.5px solid #E8E5E0 !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    margin-left: auto !important;
+  }
+
+  #mobile-nav-dropdown {
+    position: fixed !important;
+    top: 60px !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: #fff !important;
+    border-bottom: 2px solid #32BCAD !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.14) !important;
+    z-index: 299 !important;
+    display: none !important;
+    flex-direction: column !important;
+    padding: 8px 0 !important;
+    animation: slideDown 0.18s ease !important;
+  }
+
+  #mobile-nav-dropdown.open {
+    display: flex !important;
+  }
+
+  .mobile-nav-item {
+    padding: 14px 20px !important;
+    font-family: 'Oswald', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    letter-spacing: .07em !important;
+    text-transform: uppercase !important;
+    color: #AEAEAE !important;
+    cursor: pointer !important;
+    border: none !important;
+    background: none !important;
+    text-align: left !important;
+    width: 100% !important;
+    border-left: 3px solid transparent !important;
+    transition: all .15s !important;
+  }
+
+  .mobile-nav-item.active {
+    color: #003865 !important;
+    background: #F5F4F1 !important;
+    border-left-color: #32BCAD !important;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   2. STUDENT APP — phone panel goes full-width, stacks vertically
+───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* The outer wrap: was flex row side-by-side, now vertical scroll */
+  div[style*="height: 'calc(100dvh - 80px)'"],
+  div[style*='height: "calc(100dvh - 80px)"'],
+  div[style*="overflow: 'hidden'"][style*="display: 'flex'"] {
+    flex-direction: column !important;
+    height: auto !important;
+    overflow: visible !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Phone panel: was 360px fixed, now full width */
+  div[style*="width: 360"][style*="background: '#002548'"],
+  div[style*='width: 360'][style*='background: "#002548"'] {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 100svh !important;
+    box-shadow: none !important;
+    flex-shrink: unset !important;
+  }
+
+  /* Phone footer (VIEW MY ORDER) — fixed to bottom of viewport on mobile */
+  div[style*="background: '#001929'"][style*="flexShrink: 0"] {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 100 !important;
+    padding-bottom: max(12px, env(safe-area-inset-bottom)) !important;
+    box-shadow: 0 -4px 20px rgba(0,0,0,.25) !important;
+  }
+
+  /* Add bottom padding to items list so it doesn't hide behind fixed footer */
+  div[style*="overflowY: 'auto'"][style*="padding: '10px 12px'"] {
+    padding-bottom: 80px !important;
+  }
+
+  /* Right panel (info cards): full width below phone panel */
+  div[style*="flex: 1"][style*="overflowY: 'auto'"][style*="background: '#F5F4F1'"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px !important;
+    overflow: visible !important;
+  }
+
+  /* Top row of info cards: stack to single column on mobile */
+  div[style*="gridTemplateColumns: '1fr 1fr'"][style*="marginBottom: 14"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Category emoji + label: make sure they fit */
+  div[style*="gridTemplateColumns: 'repeat(5, 1fr)'"] {
+    gap: 0 !important;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   3. STAFF DASHBOARD — metrics 2×2, columns stack
+───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Page wrapper: reduce padding */
+  div[style*="minHeight: 'calc(100dvh - 80px)'"] {
+    padding: 14px !important;
+  }
+
+  /* Metrics row: 4-col → 2×2 grid */
+  div[style*="gridTemplateColumns: 'repeat(4, 1fr)'"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* Two-col card grid → single column */
+  div[style*="gridTemplateColumns: '1fr 1fr'"][style*="marginBottom: 18"],
+  div[style*="gridTemplateColumns: '1fr 1fr'"][style*="gap: 18"] {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* Inventory table: allow horizontal scroll */
+  div[style*="overflowX: 'auto'"] {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Log row (input + select + button): allow wrapping */
+  div[style*="display: 'flex'"][style*="gap: 10"][style*="marginTop"] {
+    flex-wrap: wrap !important;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   4. ADMIN REPORTS — metrics 2×2, 2fr/1fr grid stacks
+───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Admin page wrapper padding */
+  /* (already covered by the minHeight rule above) */
+
+  /* Admin main 2-col grid (charts + alerts): stack vertically */
+  div[style*="gridTemplateColumns: '2fr 1fr'"] {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* Bar chart label column: make narrower on mobile */
+  div[style*="gridTemplateColumns: '90px 1fr 46px'"] {
+    grid-template-columns: 70px 1fr 38px !important;
+    gap: 6px !important;
+  }
+
+  /* Filter row: wrap buttons */
+  div[style*="display: 'flex'"][style*="gap: 8"][style*="marginBottom: 20"] {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  /* Export button: full width on mobile */
+  div[style*="marginLeft: 'auto'"] button {
+    margin-left: 0 !important;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   5. CORPORATE PARTNERS — banner + mainGrid stack
+───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Partner hero banner: reduce padding */
+  div[style*="padding: '28px 32px 24px'"] {
+    padding: 18px 16px !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+
+  /* Metrics row: flex-wrap already on, just reduce padding */
+  div[style*="padding: '20px 32px 0'"] {
+    padding: 14px 0 0 !important;
+    gap: 10px !important;
+  }
+
+  /* Partner main grid (1fr 360px) → single column */
+  div[style*="gridTemplateColumns: '1fr 360px'"] {
+    grid-template-columns: 1fr !important;
+    padding: 14px 0 32px !important;
+    gap: 14px !important;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   6. MODALS — full-screen on mobile
+───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Modal overlay: tighter padding */
+  div[style*="position: 'fixed'"][style*="alignItems: 'center'"][style*="justifyContent: 'center'"] {
+    padding: 12px !important;
+    align-items: flex-end !important;
+  }
+
+  /* Modal box: full width, sheet style from bottom */
+  div[style*="borderRadius: 16"][style*="maxWidth: 420"] {
+    max-width: 100% !important;
+    width: 100% !important;
+    border-radius: 16px 16px 0 0 !important;
+    max-height: 90dvh !important;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   7. GLOBAL MOBILE POLISH
+───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Make sure toast notifications don't overflow */
+  div[style*="position: 'fixed'"][style*="bottom: 24"] {
+    bottom: max(16px, env(safe-area-inset-bottom)) !important;
+    right: 12px !important;
+    left: 12px !important;
+    max-width: calc(100vw - 24px) !important;
+  }
+
+  /* Table text: slightly smaller on mobile for readability */
+  table { font-size: 12px !important; }
+  th, td { padding: 8px 8px !important; }
+
+  /* Metric value font: slightly smaller */
+  /* (Oswald 32px can be tight on very small screens) */
+  div[style*="fontSize: 32"] {
+    font-size: 26px !important;
+  }
+
+  /* Input / select / button min-height for tap targets */
+  input, select, textarea, button {
+    min-height: 40px !important;
+  }
+
+  /* Remove fixed min-widths that could overflow */
+  div[style*="minWidth: 260"] {
+    min-width: 0 !important;
+  }
+}

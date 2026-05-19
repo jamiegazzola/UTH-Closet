@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --navy:        #003865;
+  --navy-dark:   #002548;
+  --navy-deeper: #001830;
+  --navy-light:  #E6EEF5;
+  --purple:      #642F6C;
+  --purple-light:#F3EAF5;
+  --teal:        #32BCAD;
+  --teal-light:  #E6F8F7;
+  --teal-dim:    rgba(50,188,173,.12);
+  --pink:        #D0006F;
+  --orange:      #FF9E1B;
+  --green:       #78BE20;
+  --yellow:      #EEDC00;
+  --off-white:   #F5F4F1;
+  --border:      #DDD9D3;
+  --text:        #1A1A1A;
+  --muted:       #6B6B6B;
+  --light:       #AEAEAE;
+  --white:       #FFFFFF;
+
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+
+  --shadow-sm:   0 1px 4px rgba(0,0,0,.07);
+  --shadow-md:   0 4px 16px rgba(0,0,0,.10);
+  --shadow-lg:   0 8px 32px rgba(0,0,0,.13);
+  --shadow-navy: 0 8px 32px rgba(0,56,101,.25);
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Prevent font size adjustment on iOS rotation */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  /* Warm white/cream — keeps nav navy while content feels light */
+  background: #F5F4F1;
+  color: var(--text);
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height — fixes iOS toolbar issue */
+  /* Honour iOS safe areas (notch, home bar) */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  letter-spacing: .02em;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  /* Remove iOS tap flash */
+  -webkit-tap-highlight-color: transparent;
+  /* Prevent double-tap zoom on buttons */
+  touch-action: manipulation;
+}
+
+input, select, textarea {
+  outline: none;
+  font-family: 'Open Sans', sans-serif;
+  /* Prevent zoom on focus in iOS (keeps font-size ≥ 16px) */
+  font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Override font-size for inputs that render at a specific smaller size visually —
+   we handle it via transform scaling instead of font-size to avoid iOS zoom */
+input[data-small], select[data-small] {
+  font-size: 16px; /* keep at 16px to prevent zoom; visually adjust via padding */
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Prevent horizontal overflow on mobile */
+#root {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,56,101,.18); border-radius: 2px; }
+
+/* Hide scrollbar for horizontal tab bars (iOS) */
+.tabs-scroll {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs-scroll::-webkit-scrollbar { display: none; }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .5; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px) scale(.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.fade-in { animation: fadeIn .4s ease both; }
+
+/* Responsive helpers */
+@media (max-width: 768px) {
+  /* Stack grids on mobile */
+  .grid-4col { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-2col { grid-template-columns: 1fr !important; }
+  .grid-3col { grid-template-columns: 1fr !important; }
+  .hide-mobile { display: none !important; }
+}
+
+@media (max-width: 480px) {
+  .grid-4col { grid-template-columns: 1fr 1fr !important; }
+}
+
+/* Utility */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); border: 0;
+}
