@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>UTH CLOSET</title>
+<meta name="description" content="Private, no questions asked — browse and pre-order what you need.">
+<meta name="theme-color" content="#003865">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --navy:#003865;--navy-dark:#002548;--navy-mid:#004a82;--navy-light:#E6EEF5;
+  --purple:#642F6C;--teal:#32BCAD;--teal-dark:#28a096;
+  --orange:#FF9E1B;--pink:#D0006F;--green:#78BE20;--yellow:#EEDC00;
+  --offwhite:#F4F3F0;--border:#E0DDD8;
+  --shadow-sm:0 1px 4px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 18px rgba(0,0,0,.1),0 2px 6px rgba(0,0,0,.05);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.13),0 4px 12px rgba(0,0,0,.07);
+  --shadow-navy:0 8px 32px rgba(0,56,101,.28);
+  --shadow-teal:0 4px 20px rgba(50,188,173,.35);
+  --shadow-orange:0 4px 20px rgba(255,158,27,.4);
+}
+body{font-family:'Open Sans',sans-serif;background:var(--offwhite);min-height:100vh;overflow-x:hidden;}
+.oswald,h1,h2,h3,h4{font-family:'Oswald',sans-serif;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(0,56,101,.15);border-radius:10px;}
+
+/* ══ NAV ══ */
+.nav{
+  background:linear-gradient(120deg,var(--navy-dark) 0%,var(--navy) 55%,var(--navy-mid) 100%);
+  border-bottom:3px solid var(--teal);height:90px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 26px;position:sticky;top:0;z-index:100;
+  box-shadow:var(--shadow-navy);overflow:hidden;
+}
+.nav::before{
+  content:'';position:absolute;top:-50px;right:200px;width:300px;height:200px;
+  border-radius:50%;background:radial-gradient(circle,rgba(50,188,173,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.nav-left{display:flex;align-items:center;z-index:1;}
+.nav-logo{
+  font-family:'Oswald',sans-serif;font-size:26px;font-weight:700;color:#fff;
+  letter-spacing:.1em;display:flex;align-items:center;gap:10px;
+}
+.logo-dots{display:flex;gap:5px;align-items:center;}
+.dot-a{
+  width:9px;height:9px;border-radius:50%;background:var(--teal);
+  box-shadow:0 0 8px rgba(50,188,173,.7),0 0 16px rgba(50,188,173,.4);
+  animation:glow-pulse 3s ease-in-out infinite;
+}
+.dot-b{width:9px;height:9px;border-radius:50%;background:var(--teal);opacity:.45;animation:glow-pulse 3s ease-in-out infinite .6s;}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 8px rgba(50,188,173,.7),0 0 16px rgba(50,188,173,.4);}50%{box-shadow:0 0 14px rgba(50,188,173,.9),0 0 28px rgba(50,188,173,.6);}}
+.nav-tabs{display:flex;gap:3px;z-index:1;}
+.nav-tab{
+  font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;letter-spacing:.07em;
+  color:rgba(255,255,255,.55);padding:9px 17px;border-radius:7px;cursor:pointer;
+  transition:all .22s cubic-bezier(.4,0,.2,1);border:none;background:none;white-space:nowrap;
+  position:relative;
+}
+.nav-tab:hover:not(.active){color:rgba(255,255,255,.85);background:rgba(255,255,255,.06);}
+.nav-tab.active{
+  color:#fff;
+  background:linear-gradient(160deg,rgba(50,188,173,.18) 0%,rgba(50,188,173,.06) 100%);
+  border:1px solid rgba(50,188,173,.25);
+}
+.nav-tab.active::after{
+  content:'';position:absolute;bottom:-1px;left:14px;right:14px;height:2px;
+  background:var(--teal);border-radius:2px 2px 0 0;
+  box-shadow:0 0 8px rgba(50,188,173,.8);
+}
+.nav-right{z-index:1;}
+.school-picker{
+  display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 15px;
+  border-radius:9px;border:1px solid rgba(50,188,173,.28);
+  background:rgba(50,188,173,.07);color:#fff;transition:all .2s;position:relative;
+}
+.school-picker:hover{background:rgba(50,188,173,.15);border-color:rgba(50,188,173,.45);}
+.sp-inner{display:flex;flex-direction:column;gap:1px;}
+.sp-label{font-family:'Oswald',sans-serif;font-size:10px;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;}
+.sp-name{font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;color:#fff;max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sp-chevron{color:rgba(255,255,255,.4);font-size:11px;transition:transform .2s;}
+.school-picker.is-open .sp-chevron{transform:rotate(180deg);}
+.school-dropdown{
+  position:absolute;top:calc(100% + 10px);right:0;
+  background:linear-gradient(160deg,#002d5e 0%,#001e40 100%);
+  border:1px solid rgba(50,188,173,.22);border-radius:11px;min-width:215px;
+  overflow:hidden;display:none;z-index:200;
+  box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(50,188,173,.08);
+}
+.school-dropdown.open{display:block;animation:dropDown .18s cubic-bezier(.4,0,.2,1);}
+@keyframes dropDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.sdi{
+  padding:12px 18px;font-family:'Oswald',sans-serif;font-size:14px;
+  color:rgba(255,255,255,.7);cursor:pointer;transition:all .15s;
+  border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:10px;
+}
+.sdi:last-child{border-bottom:none;}
+.sdi:hover{background:rgba(50,188,173,.1);color:#fff;padding-left:22px;}
+.sdi.active-school{color:var(--teal);}
+.sdi-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 6px var(--teal);display:none;flex-shrink:0;}
+.sdi.active-school .sdi-dot{display:block;}
+
+/* ══ VIEWS ══ */
+.view{display:none;}
+.view.active{display:block;}
+
+/* ══ TOAST ══ */
+.toast-container{position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.toast{
+  background:linear-gradient(135deg,var(--navy-dark) 0%,var(--navy) 100%);
+  color:#fff;padding:13px 18px 13px 14px;border-radius:9px;
+  border-left:3px solid var(--teal);font-family:'Oswald',sans-serif;font-size:14px;
+  font-weight:400;letter-spacing:.04em;max-width:320px;
+  box-shadow:0 8px 32px rgba(0,0,0,.3),0 0 0 1px rgba(50,188,173,.15);
+  animation:toastIn .3s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes toastIn{from{opacity:0;transform:translateY(16px) scale(.93);}to{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes toastOut{to{opacity:0;transform:translateY(8px);}}
+
+/* ══ MODAL ══ */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,20,45,.75);
+  backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+  z-index:500;display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.open{display:flex;animation:fadeIn .2s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal{
+  background:#fff;border-radius:18px;padding:32px;max-width:440px;width:100%;
+  max-height:88vh;overflow-y:auto;
+  box-shadow:0 40px 100px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.08);
+  animation:modalIn .28s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.9) translateY(14px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.modal-title{font-family:'Oswald',sans-serif;font-size:26px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.modal-sub{font-size:12px;color:#bbb;margin-bottom:22px;}
+.modal-section-label{font-family:'Oswald',sans-serif;font-size:11px;font-weight:700;color:var(--teal);letter-spacing:.09em;margin-bottom:10px;text-transform:uppercase;}
+.modal-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #f0ede8;}
+.modal-item:last-child{border-bottom:none;}
+.modal-dot{width:7px;height:7px;background:var(--teal);border-radius:50%;margin-top:6px;flex-shrink:0;box-shadow:0 0 6px rgba(50,188,173,.5);}
+.modal-item-name{font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;color:var(--navy);}
+.modal-item-note{font-size:11px;color:#999;margin-top:2px;line-height:1.4;}
+.modal-note{font-size:12px;color:#999;margin:18px 0;line-height:1.6;padding:13px 15px;background:#f8f7f5;border-radius:8px;border-left:3px solid rgba(50,188,173,.4);}
+.modal-actions{display:flex;gap:10px;}
+.btn-cancel{flex:1;padding:14px;border:1px solid #e8e5e0;border-radius:9px;background:#fff;font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;color:#aaa;cursor:pointer;transition:all .2s;}
+.btn-cancel:hover{background:#f5f5f5;color:#666;}
+.btn-submit{
+  flex:2;padding:14px;
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);
+  border:none;border-radius:9px;font-family:'Oswald',sans-serif;font-size:14px;font-weight:700;
+  color:#fff;cursor:pointer;letter-spacing:.06em;transition:all .2s;
+  box-shadow:var(--shadow-navy);position:relative;overflow:hidden;
+}
+.btn-submit::before{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:rgba(255,255,255,.1);border-radius:9px 9px 0 0;}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(0,56,101,.42);}
+
+/* ══════════ STUDENT ══════════ */
+.student-layout{display:flex;min-height:calc(100vh - 90px);}
+.phone-panel{
+  width:370px;flex-shrink:0;background:var(--navy-dark);
+  display:flex;flex-direction:column;
+  position:sticky;top:90px;height:calc(100vh - 90px);overflow:hidden;
+  box-shadow:4px 0 30px rgba(0,0,0,.28);
+}
+.info-panel{flex:1;padding:28px;overflow-y:auto;}
+
+.phone-header{
+  background:linear-gradient(165deg,#001929 0%,var(--navy) 100%);
+  border-bottom:2px solid rgba(50,188,173,.3);padding:17px 18px;position:relative;overflow:hidden;
+}
+.phone-header::after{
+  content:'';position:absolute;top:-50px;right:-30px;width:160px;height:160px;
+  border-radius:50%;background:radial-gradient(circle,rgba(50,188,173,.1) 0%,transparent 70%);pointer-events:none;
+}
+.phone-header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.phone-logo{font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:.1em;display:flex;align-items:center;gap:7px;}
+.ph-dots{display:flex;gap:4px;align-items:center;}
+.ph-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 5px rgba(50,188,173,.7);}
+.ph-dot2{width:6px;height:6px;border-radius:50%;background:var(--teal);opacity:.4;}
+.cart-badge{
+  background:linear-gradient(135deg,var(--orange) 0%,#e08510 100%);
+  color:#fff;font-family:'Oswald',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.06em;padding:7px 15px;border-radius:20px;cursor:pointer;
+  transition:all .22s cubic-bezier(.34,1.56,.64,1);border:none;
+  box-shadow:var(--shadow-orange);position:relative;overflow:hidden;
+}
+.cart-badge::before{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:rgba(255,255,255,.18);border-radius:20px 20px 0 0;}
+.cart-badge:hover{transform:scale(1.07) translateY(-1px);box-shadow:0 7px 24px rgba(255,158,27,.55);}
+.cart-badge:active{transform:scale(.96);}
+.phone-greeting{font-family:'Oswald',sans-serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:4px;letter-spacing:.02em;}
+.phone-subtitle{font-size:12px;color:rgba(255,255,255,.5);}
+
+.cat-bar{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  background:linear-gradient(180deg,#001e38 0%,#002244 100%);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.cat-tab{padding:11px 4px 9px;text-align:center;cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;position:relative;}
+.cat-tab.active{border-bottom-color:var(--teal);}
+.cat-tab.active::before{content:'';position:absolute;inset:0;background:rgba(50,188,173,.07);}
+.cat-emoji{font-size:16px;display:block;margin-bottom:3px;}
+.cat-label{font-family:'Oswald',sans-serif;font-size:9px;font-weight:600;letter-spacing:.06em;color:rgba(255,255,255,.48);text-transform:uppercase;display:block;transition:color .2s;}
+.cat-tab.active .cat-label{color:var(--teal);}
+.cat-tab:hover:not(.active) .cat-label{color:rgba(255,255,255,.75);}
+
+.product-list{flex:1;overflow-y:auto;padding:12px 14px;}
+.product-card{
+  background:linear-gradient(160deg,rgba(255,255,255,.065) 0%,rgba(255,255,255,.03) 100%);
+  border:1px solid rgba(255,255,255,.09);border-radius:10px;padding:13px 12px;
+  margin-bottom:9px;display:flex;align-items:flex-start;gap:10px;
+  transition:all .2s;position:relative;overflow:hidden;
+}
+.product-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.13),transparent);}
+.product-card:hover{border-color:rgba(50,188,173,.22);transform:translateY(-1px);background:linear-gradient(160deg,rgba(255,255,255,.09) 0%,rgba(255,255,255,.05) 100%);}
+.product-info{flex:1;min-width:0;}
+.product-name{font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;color:#fff;letter-spacing:.02em;margin-bottom:3px;}
+.product-desc{font-size:11px;color:rgba(255,255,255,.4);line-height:1.4;}
+.size-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;}
+.size-chip{
+  font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;padding:4px 9px;
+  border-radius:5px;border:1px solid rgba(255,255,255,.17);color:rgba(255,255,255,.6);
+  cursor:pointer;transition:all .18s;background:rgba(255,255,255,.04);
+}
+.size-chip:hover{border-color:rgba(50,188,173,.5);color:rgba(50,188,173,.9);}
+.size-chip.selected{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 0 10px rgba(50,188,173,.4);}
+.product-notes{
+  margin-top:9px;width:100%;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:7px 11px;
+  color:rgba(255,255,255,.8);font-size:11px;font-family:'Open Sans',sans-serif;
+  resize:none;outline:none;transition:border-color .2s,background .2s;line-height:1.5;
+}
+.product-notes:focus{border-color:rgba(50,188,173,.5);background:rgba(50,188,173,.04);}
+.product-notes::placeholder{color:rgba(255,255,255,.24);}
+.add-btn{
+  font-family:'Oswald',sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;
+  padding:9px 13px;border-radius:8px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);
+  color:#fff;flex-shrink:0;transition:all .22s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 3px 12px rgba(50,188,173,.35);position:relative;overflow:hidden;white-space:nowrap;
+}
+.add-btn::before{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:rgba(255,255,255,.16);border-radius:8px 8px 0 0;}
+.add-btn:hover{transform:scale(1.06) translateY(-1px);box-shadow:0 7px 20px rgba(50,188,173,.5);}
+.add-btn:active{transform:scale(.95);}
+.add-btn.added{background:linear-gradient(135deg,var(--green) 0%,#5da012 100%);box-shadow:0 3px 12px rgba(120,190,32,.4);}
+.add-btn.error{background:linear-gradient(135deg,var(--pink) 0%,#a50059 100%);box-shadow:0 3px 12px rgba(208,0,111,.4);animation:shake .3s ease;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}50%{transform:translateX(-3px);}}
+
+.phone-footer{
+  padding:14px;
+  background:linear-gradient(180deg,var(--navy-dark) 0%,#001a2e 100%);
+  border-top:1px solid rgba(50,188,173,.13);
+}
+.view-order-btn{
+  width:100%;padding:15px;
+  background:linear-gradient(135deg,var(--orange) 0%,#e08510 100%);
+  color:#fff;font-family:'Oswald',sans-serif;font-size:15px;font-weight:700;
+  letter-spacing:.08em;border:none;border-radius:9px;cursor:pointer;
+  transition:all .22s cubic-bezier(.34,1.56,.64,1);box-shadow:var(--shadow-orange);
+  position:relative;overflow:hidden;
+}
+.view-order-btn::before{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:rgba(255,255,255,.18);border-radius:9px 9px 0 0;}
+.view-order-btn:hover{transform:translateY(-2px);box-shadow:0 9px 30px rgba(255,158,27,.58);}
+.view-order-btn:active{transform:scale(.97);}
+
+/* info panel */
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:18px;}
+.info-card{
+  background:#fff;border-radius:13px;padding:22px;
+  border:1px solid rgba(224,221,216,.6);box-shadow:var(--shadow-sm);
+  transition:box-shadow .2s,transform .2s;
+}
+.info-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.info-card-title{
+  font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;color:var(--navy);
+  letter-spacing:.06em;margin-bottom:14px;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.info-card-title::before{content:'';display:block;width:3px;height:14px;background:var(--teal);border-radius:2px;flex-shrink:0;}
+.how-step{display:flex;align-items:flex-start;gap:11px;margin-bottom:11px;}
+.step-num{
+  width:27px;height:27px;
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Oswald',sans-serif;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;
+  box-shadow:0 3px 9px rgba(0,56,101,.28);
+}
+.step-text{font-size:12px;color:#555;line-height:1.55;padding-top:4px;}
+.order-hist-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(224,221,216,.55);font-size:12px;color:#444;}
+.order-hist-row:last-child{border-bottom:none;}
+.status-badge{padding:3px 10px;border-radius:20px;font-size:10px;font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:.04em;}
+.s-picked{background:#e8f7d0;color:#3a6b00;}
+.s-ready{background:#fff3e0;color:#8a4500;}
+.s-prep{background:var(--navy-light);color:var(--navy);}
+.dark-card{
+  background:linear-gradient(145deg,#001929 0%,var(--navy) 55%,#003060 100%);
+  border-radius:13px;padding:22px;border:1px solid rgba(50,188,173,.18);
+  box-shadow:var(--shadow-navy);position:relative;overflow:hidden;
+}
+.dark-card::before{content:'';position:absolute;top:-50px;right:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(50,188,173,.1) 0%,transparent 70%);pointer-events:none;}
+.dark-card .tagline{font-family:'Oswald',sans-serif;font-size:17px;font-weight:700;color:var(--teal);margin-bottom:10px;line-height:1.25;text-shadow:0 0 20px rgba(50,188,173,.4);}
+.dark-card p{font-size:12px;color:rgba(255,255,255,.62);margin-bottom:14px;line-height:1.6;}
+.brand-badges{display:flex;flex-wrap:wrap;gap:6px;}
+.brand-badge{padding:5px 11px;border-radius:5px;background:rgba(50,188,173,.1);border:1px solid rgba(50,188,173,.22);color:var(--teal);font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;letter-spacing:.05em;}
+.about-card{background:#fff;border-radius:13px;padding:24px;border:1px solid rgba(224,221,216,.6);box-shadow:var(--shadow-sm);}
+.about-card h3{font-family:'Oswald',sans-serif;font-size:17px;font-weight:600;color:var(--navy);margin-bottom:12px;}
+.about-card p{font-size:13px;color:#555;line-height:1.7;margin-bottom:14px;}
+.phrase-tags{display:flex;flex-wrap:wrap;gap:7px;}
+.phrase-tag{padding:5px 12px;border-radius:5px;background:var(--navy-light);color:var(--navy);font-size:11px;font-family:'Oswald',sans-serif;font-weight:500;letter-spacing:.03em;transition:all .2s;cursor:default;}
+.phrase-tag:hover{background:var(--navy);color:#fff;}
+
+/* ══════════ STAFF ══════════ */
+.staff-view{padding:28px;max-width:1280px;margin:0 auto;}
+.filter-row{display:flex;gap:8px;align-items:center;margin-bottom:20px;flex-wrap:wrap;}
+.filter-label{font-size:11px;color:#bbb;font-family:'Oswald',sans-serif;letter-spacing:.07em;text-transform:uppercase;margin-right:2px;}
+.filter-sep{width:1px;height:22px;background:#e0ddd8;margin:0 6px;flex-shrink:0;}
+.filter-btn{
+  padding:7px 16px;border-radius:20px;border:1px solid #dedad5;
+  background:#fff;font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;
+  color:#999;cursor:pointer;transition:all .2s;letter-spacing:.04em;box-shadow:var(--shadow-sm);
+}
+.filter-btn:hover{border-color:var(--teal);color:var(--navy);}
+.filter-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:0 4px 14px rgba(0,56,101,.3);}
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+.metric-card{
+  background:#fff;border-radius:13px;padding:22px;
+  border:1px solid rgba(224,221,216,.6);border-top:4px solid transparent;
+  box-shadow:var(--shadow-sm);transition:all .2s;position:relative;overflow:hidden;
+}
+.metric-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.metric-card.c-green{border-top-color:var(--green);}
+.metric-card.c-orange{border-top-color:var(--orange);}
+.metric-card.c-pink{border-top-color:var(--pink);}
+.metric-card.c-navy{border-top-color:var(--navy);}
+.metric-icon{position:absolute;top:16px;right:16px;font-size:26px;opacity:.1;}
+.metric-label{font-size:11px;color:#aaa;margin-bottom:10px;letter-spacing:.02em;}
+.metric-value{font-family:'Oswald',sans-serif;font-size:36px;font-weight:700;color:var(--navy);line-height:1;}
+.metric-value.v-pink{color:var(--pink);}
+.metric-change{font-size:11px;color:#bbb;margin-top:6px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.card{background:#fff;border-radius:13px;padding:22px;border:1px solid rgba(224,221,216,.6);box-shadow:var(--shadow-sm);}
+.card-title{font-family:'Oswald',sans-serif;font-size:16px;font-weight:600;color:var(--navy);letter-spacing:.05em;margin-bottom:18px;display:flex;align-items:center;gap:9px;}
+.card-title::before{content:'';display:block;width:3px;height:16px;background:var(--teal);border-radius:2px;flex-shrink:0;}
+.scan-box{
+  border:2px dashed rgba(50,188,173,.38);border-radius:11px;padding:22px;
+  text-align:center;cursor:pointer;margin-bottom:16px;
+  transition:all .2s;background:rgba(50,188,173,.025);
+}
+.scan-box:hover{background:rgba(50,188,173,.07);border-color:var(--teal);transform:scale(1.01);}
+.scan-box:active{transform:scale(.97);}
+.scan-icon{font-size:28px;margin-bottom:6px;}
+.scan-label{font-family:'Oswald',sans-serif;font-size:12px;color:var(--teal);font-weight:600;letter-spacing:.05em;}
+.manual-row{display:flex;gap:8px;margin-bottom:16px;}
+.manual-input{flex:1;padding:9px 13px;border:1px solid #e0ddd8;border-radius:8px;font-size:13px;outline:none;transition:border-color .2s,box-shadow .2s;font-family:'Open Sans',sans-serif;}
+.manual-input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(50,188,173,.12);}
+.manual-select{padding:9px 12px;border:1px solid #e0ddd8;border-radius:8px;font-size:12px;font-family:'Oswald',sans-serif;font-weight:600;outline:none;cursor:pointer;background:#fff;transition:border-color .2s;}
+.manual-select:focus{border-color:var(--teal);}
+.log-btn{
+  padding:9px 18px;
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);
+  color:#fff;border:none;border-radius:8px;font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;
+  letter-spacing:.05em;cursor:pointer;transition:all .2s;box-shadow:0 3px 10px rgba(0,56,101,.24);
+}
+.log-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,56,101,.36);}
+.activity-title{font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;color:#ccc;letter-spacing:.09em;margin-bottom:10px;text-transform:uppercase;}
+.activity-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(224,221,216,.4);font-size:12px;}
+.activity-item:last-child{border-bottom:none;}
+.activity-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.activity-dot.out{background:var(--pink);box-shadow:0 0 6px rgba(208,0,111,.4);}
+.activity-dot.in{background:var(--green);box-shadow:0 0 6px rgba(120,190,32,.4);}
+.activity-text{flex:1;color:#444;}
+.activity-time{color:#bbb;white-space:nowrap;font-size:11px;}
+.order-row-staff{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid rgba(224,221,216,.4);}
+.order-row-staff:last-child{border-bottom:none;}
+.order-id{font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;color:var(--navy);}
+.order-items-text{font-size:11px;color:#aaa;margin-top:3px;line-height:1.5;}
+.order-status{padding:3px 10px;border-radius:20px;font-size:10px;font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:.04em;white-space:nowrap;}
+.os-pending{background:#fff3e0;color:#8a4500;}
+.os-fulfilled{background:#e8f7d0;color:#3a6b00;}
+.fulfill-btn{
+  margin-left:auto;padding:7px 16px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--purple) 0%,#7a3a82 100%);
+  color:#fff;border:none;border-radius:8px;
+  font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;
+  cursor:pointer;transition:all .2s;box-shadow:0 3px 10px rgba(100,47,108,.28);
+}
+.fulfill-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(100,47,108,.42);}
+.fulfill-btn.done{background:linear-gradient(135deg,var(--green) 0%,#5da012 100%);cursor:default;box-shadow:0 3px 10px rgba(120,190,32,.3);}
+.table-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.export-btn{padding:8px 16px;background:#fff;border:1px solid #dedad5;border-radius:8px;font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;color:var(--navy);cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm);letter-spacing:.04em;}
+.export-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:0 4px 14px rgba(0,56,101,.28);}
+.inv-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;}
+.inv-table th{text-align:left;padding:10px 14px;background:linear-gradient(180deg,#f2f0eb 0%,#edeae4 100%);font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;color:var(--navy);letter-spacing:.06em;text-transform:uppercase;}
+.inv-table th:first-child{border-radius:8px 0 0 8px;}
+.inv-table th:last-child{border-radius:0 8px 8px 0;}
+.inv-table td{padding:11px 14px;border-bottom:1px solid rgba(224,221,216,.35);color:#444;transition:background .15s;}
+.inv-table tr:hover td{background:rgba(50,188,173,.04);}
+.inv-table tr:last-child td{border-bottom:none;}
+.cat-dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:7px;vertical-align:middle;}
+.stock-badge{padding:4px 10px;border-radius:20px;font-size:10px;font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:.04em;}
+.s-ok{background:#e8f7d0;color:#3a6b00;}
+.s-low{background:#fff3e0;color:#8a4500;}
+.s-critical{background:#ffe0ec;color:#900040;}
+.restock-btn{padding:5px 14px;background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);color:#fff;border:none;border-radius:6px;font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,56,101,.2);}
+.restock-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,56,101,.32);}
+
+/* ══════════ ADMIN ══════════ */
+.admin-view{padding:28px;max-width:1280px;margin:0 auto;}
+.admin-two-col{display:grid;grid-template-columns:2fr 1fr;gap:20px;}
+.charts-card{background:#fff;border-radius:13px;padding:26px;border:1px solid rgba(224,221,216,.6);box-shadow:var(--shadow-sm);}
+.chart-section{margin-bottom:28px;}
+.chart-section:last-child{margin-bottom:0;}
+.chart-title{font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;color:#bbb;letter-spacing:.09em;margin-bottom:14px;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.chart-title::before{content:'';display:inline-block;width:3px;height:12px;background:var(--teal);border-radius:1px;flex-shrink:0;}
+.bar-row{display:flex;align-items:center;gap:12px;margin-bottom:9px;}
+.bar-label{font-size:12px;color:#777;width:110px;flex-shrink:0;text-align:right;font-family:'Oswald',sans-serif;letter-spacing:.02em;}
+.bar-track{flex:1;background:#f0ede8;border-radius:4px;height:22px;overflow:hidden;position:relative;}
+.bar-fill{height:100%;border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1);position:relative;}
+.bar-fill::after{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:rgba(255,255,255,.2);border-radius:4px 4px 0 0;}
+.bar-val{font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;color:#666;width:42px;flex-shrink:0;}
+.schools-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;margin-top:14px;}
+.schools-table th{text-align:left;padding:9px 12px;background:#f4f3f0;font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;color:var(--navy);letter-spacing:.05em;}
+.schools-table th:first-child{border-radius:7px 0 0 7px;}
+.schools-table th:last-child{border-radius:0 7px 7px 0;}
+.schools-table td{padding:9px 12px;border-bottom:1px solid rgba(224,221,216,.35);color:#444;}
+.mini-bar{height:8px;background:#f0ede8;border-radius:4px;width:100px;overflow:hidden;}
+.mini-bar-fill{height:100%;background:linear-gradient(90deg,var(--teal) 0%,var(--teal-dark) 100%);border-radius:4px;transition:width .6s ease;}
+.alerts-card{background:#fff;border-radius:13px;padding:22px;border:1px solid rgba(224,221,216,.6);box-shadow:var(--shadow-sm);margin-bottom:16px;}
+.quick-actions-card{background:#fff;border-radius:13px;padding:22px;border:1px solid rgba(224,221,216,.6);box-shadow:var(--shadow-sm);}
+.alert-item{display:flex;align-items:flex-start;gap:11px;padding:10px 0;border-bottom:1px solid rgba(224,221,216,.35);font-size:12px;}
+.alert-item:last-child{border-bottom:none;}
+.alert-dot{width:9px;height:9px;border-radius:50%;margin-top:3px;flex-shrink:0;}
+.alert-dot.red{background:var(--pink);box-shadow:0 0 6px rgba(208,0,111,.4);}
+.alert-dot.yellow{background:var(--orange);box-shadow:0 0 6px rgba(255,158,27,.4);}
+.alert-dot.blue{background:var(--teal);box-shadow:0 0 6px rgba(50,188,173,.4);}
+.alert-text{color:#444;line-height:1.5;}
+.qa-btn{
+  width:100%;padding:12px 18px;border-radius:9px;border:none;
+  font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;letter-spacing:.06em;
+  cursor:pointer;margin-bottom:9px;text-align:left;transition:all .2s;
+  position:relative;overflow:hidden;
+}
+.qa-btn:last-child{margin-bottom:0;}
+.qa-btn::before{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:rgba(255,255,255,.13);pointer-events:none;}
+.qa-btn:hover{transform:translateY(-1px);}
+.qa-btn:active{transform:scale(.98);}
+.qa-navy{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);color:#fff;box-shadow:0 4px 14px rgba(0,56,101,.28);}
+.qa-navy:hover{box-shadow:0 7px 22px rgba(0,56,101,.42);}
+.qa-purple{background:linear-gradient(135deg,var(--purple) 0%,#7a3a82 100%);color:#fff;box-shadow:0 4px 14px rgba(100,47,108,.28);}
+.qa-purple:hover{box-shadow:0 7px 22px rgba(100,47,108,.42);}
+.qa-teal{background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);color:#fff;box-shadow:var(--shadow-teal);}
+.qa-teal:hover{box-shadow:0 7px 22px rgba(50,188,173,.52);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .student-layout{flex-direction:column;}
+  .phone-panel{width:100%;position:static;height:auto;max-height:72vh;}
+  .info-panel{padding:18px;}
+  .info-grid{grid-template-columns:1fr;}
+  .metrics-grid{grid-template-columns:repeat(2,1fr);}
+  .two-col,.admin-two-col{grid-template-columns:1fr;}
+  .nav{flex-wrap:wrap;height:auto;padding:12px 18px 8px;gap:10px;}
+  .nav-tabs{order:3;width:100%;}
+}
+@media(max-width:500px){
+  .nav-tab{font-size:11px;padding:7px 10px;}
+  .metrics-grid{grid-template-columns:1fr 1fr;}
+  .metric-value{font-size:28px;}
+  .filter-btn{padding:6px 11px;font-size:11px;}
+  .phone-panel{max-height:65vh;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <div class="nav-left">
+    <div class="nav-logo">
+      <div class="logo-dots"><div class="dot-a"></div><div class="dot-b"></div></div>
+      UTH CLOSET
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchView('student',this)">Student App</button>
+    <button class="nav-tab" onclick="switchView('staff',this)">Staff Dashboard</button>
+    <button class="nav-tab" onclick="switchView('admin',this)">Admin Reports</button>
+  </div>
+  <div class="nav-right">
+    <div class="school-picker" id="schoolPicker" onclick="toggleDD(event)">
+      <div class="sp-inner">
+        <div class="sp-label">School</div>
+        <div class="sp-name" id="spName">Monarch High</div>
+      </div>
+      <span class="sp-chevron">▾</span>
+      <div class="school-dropdown" id="schoolDD">
+        <div class="sdi active-school" onclick="pickSchool('Monarch High',this,event)"><div class="sdi-dot"></div>Monarch High</div>
+        <div class="sdi" onclick="pickSchool('Riverside Secondary',this,event)"><div class="sdi-dot"></div>Riverside Secondary</div>
+        <div class="sdi" onclick="pickSchool('Eastview Academy',this,event)"><div class="sdi-dot"></div>Eastview Academy</div>
+        <div class="sdi" onclick="pickSchool('All Schools',this,event)"><div class="sdi-dot"></div>All Schools</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="toast-container" id="tc"></div>
+
+<!-- ══ MODAL ══ -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal">
+    <div class="modal-title">Submit your order?</div>
+    <div class="modal-sub">Private — no name attached, no questions asked.</div>
+    <div class="modal-section-label">Your order</div>
+    <div id="modalItems"></div>
+    <div class="modal-note">Items will be prepared privately — usually ready same day. No questions asked.</div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-submit" onclick="submitOrder()">Submit Order →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ STUDENT ══════════ -->
+<div class="view active" id="view-student">
+  <div class="student-layout">
+    <div class="phone-panel">
+      <div class="phone-header">
+        <div class="phone-header-top">
+          <div class="phone-logo">
+            <div class="ph-dots"><div class="ph-dot"></div><div class="ph-dot2"></div></div>
+            UTH CLOSET
+          </div>
+          <button class="cart-badge" id="cartBadge" onclick="openModal()">0 ITEMS</button>
+        </div>
+        <div class="phone-greeting">Welcome back.</div>
+        <div class="phone-subtitle">Browse and pre-order — private, no questions asked</div>
+      </div>
+      <div class="cat-bar" id="catBar"></div>
+      <div class="product-list" id="productList"></div>
+      <div class="phone-footer">
+        <button class="view-order-btn" onclick="openModal()">VIEW MY ORDER</button>
+      </div>
+    </div>
+    <div class="info-panel">
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-title">How it works</div>
+          <div class="how-step"><div class="step-num">1</div><div class="step-text">Browse categories and add items you need — no login required</div></div>
+          <div class="how-step"><div class="step-num">2</div><div class="step-text">Pre-order privately — no name, no judgment</div></div>
+          <div class="how-step"><div class="step-num">3</div><div class="step-text">Pick up from the Uth Closet when ready</div></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-title">Your recent orders</div>
+          <div class="order-hist-row"><span>Order #8842</span><span class="status-badge s-picked">Picked up</span></div>
+          <div class="order-hist-row"><span>Order #8901</span><span class="status-badge s-ready">Ready</span></div>
+          <div class="order-hist-row"><span>Order #9012</span><span class="status-badge s-prep">Preparing</span></div>
+        </div>
+        <div class="dark-card">
+          <div class="tagline">Take What You Need. Give What You Can.</div>
+          <p>The Uth Closet is here for you — no judgment, no questions, just support.</p>
+          <div class="brand-badges">
+            <span class="brand-badge">Community</span>
+            <span class="brand-badge">Health</span>
+            <span class="brand-badge">Education</span>
+            <span class="brand-badge">Food</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-card">
+        <h3>About the Uth Closet</h3>
+        <p>The Uth Closet is a school-based resource closet run by Uth Inc., providing students with the essentials they need to show up, feel ready, and thrive — from hygiene supplies to clothing to snacks. Everything is free, private, and no-questions-asked.</p>
+        <div class="phrase-tags">
+          <span class="phrase-tag">Youth Equity</span>
+          <span class="phrase-tag">No Stigma</span>
+          <span class="phrase-tag">No Questions Asked</span>
+          <span class="phrase-tag">Potential Unlocked</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ STAFF ══════════ -->
+<div class="view" id="view-staff">
+  <div class="staff-view">
+    <div class="filter-row">
+      <span class="filter-label">School</span>
+      <button class="filter-btn active" onclick="setStaffSchool(this,'all')">All Schools</button>
+      <button class="filter-btn" onclick="setStaffSchool(this,'monarch')">Monarch High</button>
+      <button class="filter-btn" onclick="setStaffSchool(this,'riverside')">Riverside Secondary</button>
+      <button class="filter-btn" onclick="setStaffSchool(this,'eastview')">Eastview Academy</button>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card c-green"><div class="metric-icon">📦</div><div class="metric-label">Items logged today</div><div class="metric-value">34</div><div class="metric-change">↑ 8 vs yesterday</div></div>
+      <div class="metric-card c-orange"><div class="metric-icon">⏳</div><div class="metric-label">Pending orders</div><div class="metric-value">7</div><div class="metric-change">Need immediate action</div></div>
+      <div class="metric-card c-pink"><div class="metric-icon">⚠️</div><div class="metric-label">Low stock alerts</div><div class="metric-value v-pink">3</div><div class="metric-change">Critical items</div></div>
+      <div class="metric-card c-navy"><div class="metric-icon">🎓</div><div class="metric-label">Students served this month</div><div class="metric-value">142</div><div class="metric-change">Across selected schools</div></div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Log an Item</div>
+        <div class="scan-box" onclick="simulateScan()"><div class="scan-icon">📷</div><div class="scan-label">TAP TO SCAN BARCODE / QR</div></div>
+        <div class="manual-row">
+          <input class="manual-input" id="manualItem" type="text" placeholder="Item name or SKU...">
+          <select class="manual-select" id="manualAction"><option value="out">Taken out</option><option value="in">Restocked</option></select>
+          <button class="log-btn" onclick="logItem()">Log</button>
+        </div>
+        <div class="activity-title">Recent Activity</div>
+        <div id="activityLog"></div>
+      </div>
+      <div class="card"><div class="card-title">Student Orders to Fulfill</div><div id="ordersList"></div></div>
+    </div>
+    <div class="card">
+      <div class="table-hdr">
+        <div class="card-title" style="margin-bottom:0">Live Inventory</div>
+        <button class="export-btn" onclick="toast('Inventory exported to CSV')">↓ Export CSV</button>
+      </div>
+      <div style="overflow-x:auto;margin-top:14px;">
+        <table class="inv-table"><thead><tr><th>Item</th><th>Category</th><th>School</th><th>In Stock</th><th>Status</th><th>Last Restocked</th><th>Action</th></tr></thead><tbody id="invBody"></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN ══════════ -->
+<div class="view" id="view-admin">
+  <div class="admin-view">
+    <div class="metrics-grid" style="margin-bottom:20px;">
+      <div class="metric-card c-green"><div class="metric-icon">📊</div><div class="metric-label">Total items distributed</div><div class="metric-value">2,841</div><div class="metric-change">School year to date</div></div>
+      <div class="metric-card c-navy"><div class="metric-icon">🎓</div><div class="metric-label">Students served</div><div class="metric-value">489</div><div class="metric-change">Across all pilot schools</div></div>
+      <div class="metric-card c-orange"><div class="metric-icon">🤝</div><div class="metric-label">Category partners</div><div class="metric-value">12</div><div class="metric-change">Active this quarter</div></div>
+      <div class="metric-card c-pink"><div class="metric-icon">🏫</div><div class="metric-label">Schools active</div><div class="metric-value">3</div><div class="metric-change">3–5 new sites onboarding</div></div>
+    </div>
+    <div class="filter-row" style="margin-bottom:20px;">
+      <span class="filter-label">School</span>
+      <button class="filter-btn active" onclick="setAdminSchool(this,'all')">All Schools</button>
+      <button class="filter-btn" onclick="setAdminSchool(this,'monarch')">Monarch High</button>
+      <button class="filter-btn" onclick="setAdminSchool(this,'riverside')">Riverside Secondary</button>
+      <button class="filter-btn" onclick="setAdminSchool(this,'eastview')">Eastview Academy</button>
+      <div class="filter-sep"></div>
+      <span class="filter-label">Time</span>
+      <button class="filter-btn" onclick="setTime(this,'all')">All Time</button>
+      <button class="filter-btn active" onclick="setTime(this,'fall')">Fall Semester</button>
+      <button class="filter-btn" onclick="setTime(this,'spring')">Spring Semester</button>
+      <button class="filter-btn" onclick="setTime(this,'month')">This Month</button>
+      <button class="export-btn" style="margin-left:auto" onclick="toast('Report exported as PDF')">↓ Export Report</button>
+    </div>
+    <div class="admin-two-col">
+      <div>
+        <div class="charts-card">
+          <div class="chart-section"><div class="chart-title">Items distributed by category</div><div id="chartCat"></div></div>
+          <div class="chart-section"><div class="chart-title">Clothing sizes most requested</div><div id="chartSizes"></div></div>
+          <div class="chart-section"><div class="chart-title">Monthly usage trend</div><div id="chartMonthly"></div></div>
+          <div class="chart-section" style="margin-bottom:0"><div class="chart-title">Schools at a glance</div>
+            <table class="schools-table"><thead><tr><th>School</th><th>Students Served</th><th>Relative Usage</th></tr></thead><tbody id="schoolsBody"></tbody></table>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="alerts-card">
+          <div class="card-title">Alerts</div>
+          <div class="alert-item"><div class="alert-dot red"></div><div class="alert-text"><strong>Deodorant critically low</strong> — Monarch: 3 units left</div></div>
+          <div class="alert-item"><div class="alert-dot red"></div><div class="alert-text"><strong>Full hygiene kit out of stock</strong> — Eastview Academy</div></div>
+          <div class="alert-item"><div class="alert-dot yellow"></div><div class="alert-text"><strong>Hygiene kits low</strong> — all 3 schools: restock due in 4 days</div></div>
+          <div class="alert-item"><div class="alert-dot yellow"></div><div class="alert-text"><strong>Backpack supply low</strong> — Riverside Secondary: 5 units</div></div>
+          <div class="alert-item"><div class="alert-dot blue"></div><div class="alert-text"><strong>Q3 2026 launch approaching</strong> — 3–5 new sites onboarding</div></div>
+        </div>
+        <div class="quick-actions-card">
+          <div class="card-title">Quick Actions</div>
+          <button class="qa-btn qa-navy" onclick="toast('Restock requests sent to all partners')">↗ Send Restock to All Partners</button>
+          <button class="qa-btn qa-purple" onclick="toast('Impact report generated — ready for grant submission')">↗ Generate Impact Report</button>
+          <button class="qa-btn qa-teal" onclick="toast('Readiness survey sent to new school sites')">↗ Send Readiness Survey</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ DATA ══
+const CATS=[
+  {id:'snacks',label:'Snacks',emoji:'🥜',color:'#FF9E1B'},
+  {id:'essentials',label:'Essentials',emoji:'🧴',color:'#32BCAD'},
+  {id:'health',label:'Health',emoji:'💊',color:'#D0006F'},
+  {id:'clothing',label:'Clothing',emoji:'👕',color:'#642F6C'},
+  {id:'supplies',label:'Supplies',emoji:'📚',color:'#003865'},
+];
+const PRODUCTS={
+  snacks:[
+    {id:'s1',name:'Granola bars',desc:'Assorted flavors, grab-and-go'},
+    {id:'s2',name:'Protein bars',desc:'High protein, 200 cal each'},
+    {id:'s3',name:'Oatmeal cups',desc:'Just add hot water, 3 flavors'},
+    {id:'s4',name:'Fruit snack packs',desc:'No added sugar, kid-friendly'},
+    {id:'s5',name:'Yogurt cups',desc:'Chobani, refrigerated, 6 flavors'},
+  ],
+  essentials:[
+    {id:'e1',name:'Deodorant',desc:'Unscented, 2.6 oz stick'},
+    {id:'e2',name:'Shampoo + conditioner',desc:'Daily use formula, 8 oz'},
+    {id:'e3',name:'Body wash',desc:'Gentle, fragrance-free, 12 oz'},
+    {id:'e4',name:'Full hygiene kit',desc:'Deodorant, soap, dental, hair care'},
+    {id:'e5',name:'Menstrual supplies',desc:'Pads + tampons, assorted sizes'},
+    {id:'e6',name:'Toothbrush + paste',desc:'Soft bristle set, travel-friendly'},
+  ],
+  health:[
+    {id:'h1',name:'First aid kit',desc:'Bandages, antiseptic, gauze'},
+    {id:'h2',name:'Water bottle',desc:'Reusable, 24 oz, BPA-free'},
+    {id:'h3',name:'Lice treatment kit',desc:'Complete treatment + comb'},
+    {id:'h4',name:'Wellness supplies',desc:'Regional and seasonal items'},
+  ],
+  clothing:[
+    {id:'c1',name:'T-shirt',desc:'Unisex crew neck, 100% cotton',sizes:['XS','S','M','L','XL'],np:'Top 3 colour preferences? (e.g. blue, black, grey)'},
+    {id:'c2',name:'Sweatshirt',desc:'Pullover hoodie, fleece-lined',sizes:['XS','S','M','L','XL'],np:'Top 3 colour preferences? (e.g. navy, green, white)'},
+    {id:'c3',name:'Leggings',desc:'Mid-rise, full length, stretchy',sizes:['XS','S','M','L','XL'],np:'Colour preferences?'},
+    {id:'c4',name:'Sport bra',desc:'Medium support, breathable',sizes:['XS','S','M','L','XL'],np:'Colour preferences?'},
+    {id:'c5',name:'Socks 3-pack',desc:'Ankle length, mixed colors',sizes:['S/M','L/XL'],np:'Colour or style preferences?'},
+    {id:'c6',name:'Underwear',desc:'Cotton basics, assorted styles',sizes:['XS','S','M','L','XL'],np:'Style preferences?'},
+    {id:'c7',name:'Pajama set',desc:'Comfort fit, breathable cotton',sizes:['XS','S','M','L','XL'],np:'Colour preferences?'},
+  ],
+  supplies:[
+    {id:'sp1',name:'Notebook',desc:'College ruled, 100 pages'},
+    {id:'sp2',name:'Folder 3-pack',desc:'Poly pocket folders, assorted'},
+    {id:'sp3',name:'Pen + pencil set',desc:'Blue/black pens + #2 pencils'},
+    {id:'sp4',name:'Full supply kit',desc:'Notebook, folders, pens, pencils'},
+    {id:'sp5',name:'Backpack',desc:'Durable 20L, multiple colors',np:'Colour preference? (e.g. black, blue, red)'},
+  ]
+};
+const INVENTORY=[
+  {item:'Granola bars',cat:'snacks',school:'Monarch High',qty:28,status:'ok',last:'May 1, 2026'},
+  {item:'Deodorant',cat:'essentials',school:'Monarch High',qty:3,status:'critical',last:'Apr 15, 2026'},
+  {item:'Full hygiene kit',cat:'essentials',school:'Eastview Academy',qty:0,status:'critical',last:'Apr 10, 2026'},
+  {item:'T-shirt (S)',cat:'clothing',school:'Riverside Secondary',qty:12,status:'ok',last:'Apr 28, 2026'},
+  {item:'Protein bars',cat:'snacks',school:'Eastview Academy',qty:7,status:'low',last:'Apr 20, 2026'},
+  {item:'Backpack',cat:'supplies',school:'Riverside Secondary',qty:5,status:'low',last:'Apr 22, 2026'},
+  {item:'First aid kit',cat:'health',school:'Monarch High',qty:15,status:'ok',last:'May 2, 2026'},
+  {item:'Water bottle',cat:'health',school:'Eastview Academy',qty:9,status:'low',last:'Apr 25, 2026'},
+  {item:'Notebook',cat:'supplies',school:'Monarch High',qty:30,status:'ok',last:'Apr 30, 2026'},
+  {item:'Menstrual supplies',cat:'essentials',school:'Riverside Secondary',qty:18,status:'ok',last:'May 3, 2026'},
+];
+const ORDERS=[
+  {id:'Anonymous #1041',items:'Granola bars x2 · Hygiene kit'},
+  {id:'Anonymous #1042',items:'T-shirt (M) · Socks S/M'},
+  {id:'Anonymous #1043',items:'Protein bars x3 · Water bottle'},
+  {id:'Anonymous #1044',items:'Full supply kit · Backpack'},
+];
+const CHART_DATA={
+  fall:{categories:[{l:'Snacks',v:412,c:'#FF9E1B'},{l:'Essentials',v:389,c:'#32BCAD'},{l:'Clothing',v:253,c:'#642F6C'},{l:'Health',v:178,c:'#D0006F'},{l:'Supplies',v:297,c:'#003865'}],sizes:[{l:'Small',v:98},{l:'Medium',v:121},{l:'Large',v:87},{l:'XL',v:47}],monthly:[{l:'Sep',v:142},{l:'Oct',v:198},{l:'Nov',v:231},{l:'Dec',v:176}],schools:[{n:'Monarch High',v:312},{n:'Riverside Secondary',v:289},{n:'Eastview Academy',v:247}]},
+  spring:{categories:[{l:'Snacks',v:378,c:'#FF9E1B'},{l:'Essentials',v:421,c:'#32BCAD'},{l:'Clothing',v:312,c:'#642F6C'},{l:'Health',v:201,c:'#D0006F'},{l:'Supplies',v:264,c:'#003865'}],sizes:[{l:'Small',v:87},{l:'Medium',v:143},{l:'Large',v:102},{l:'XL',v:58}],monthly:[{l:'Jan',v:201},{l:'Feb',v:245},{l:'Mar',v:298},{l:'Apr',v:312},{l:'May',v:278}],schools:[{n:'Monarch High',v:289},{n:'Riverside Secondary',v:341},{n:'Eastview Academy',v:204}]},
+  all:{categories:[{l:'Snacks',v:790,c:'#FF9E1B'},{l:'Essentials',v:810,c:'#32BCAD'},{l:'Clothing',v:565,c:'#642F6C'},{l:'Health',v:379,c:'#D0006F'},{l:'Supplies',v:561,c:'#003865'}],sizes:[{l:'Small',v:185},{l:'Medium',v:264},{l:'Large',v:189},{l:'XL',v:105}],monthly:[{l:'Sep',v:142},{l:'Oct',v:198},{l:'Nov',v:231},{l:'Dec',v:176},{l:'Jan',v:201},{l:'Feb',v:245},{l:'Mar',v:298},{l:'Apr',v:312}],schools:[{n:'Monarch High',v:601},{n:'Riverside Secondary',v:630},{n:'Eastview Academy',v:451}]},
+  month:{categories:[{l:'Snacks',v:89,c:'#FF9E1B'},{l:'Essentials',v:102,c:'#32BCAD'},{l:'Clothing',v:71,c:'#642F6C'},{l:'Health',v:44,c:'#D0006F'},{l:'Supplies',v:63,c:'#003865'}],sizes:[{l:'Small',v:21},{l:'Medium',v:34},{l:'Large',v:24},{l:'XL',v:12}],monthly:[{l:'May',v:142}],schools:[{n:'Monarch High',v:62},{n:'Riverside Secondary',v:78},{n:'Eastview Academy',v:55}]},
+};
+
+// ══ STATE ══
+let cart={},selSizes={},notes={},activeCat='snacks';
+let orderStatuses=ORDERS.map((_,i)=>i===3?'fulfilled':'pending');
+let actLog=[
+  {item:'Deodorant',action:'out',time:Date.now()-2*60000},
+  {item:'Granola bars',action:'in',time:Date.now()-5*60000},
+  {item:'T-shirt (M)',action:'out',time:Date.now()-18*60000},
+  {item:'Water bottle',action:'out',time:Date.now()-32*60000},
+  {item:'Notebook',action:'in',time:Date.now()-60*60000},
+  {item:'First aid kit',action:'in',time:Date.now()-90*60000},
+];
+let curTime='fall',adminSchool='all',staffSchool='all';
+
+// ══ SCHOOL DD ══
+function toggleDD(e){
+  e.stopPropagation();
+  const p=document.getElementById('schoolPicker');
+  const d=document.getElementById('schoolDD');
+  const open=d.classList.contains('open');
+  d.classList.toggle('open',!open);p.classList.toggle('is-open',!open);
+}
+document.addEventListener('click',()=>{
+  document.getElementById('schoolDD').classList.remove('open');
+  document.getElementById('schoolPicker').classList.remove('is-open');
+});
+function pickSchool(name,el,e){
+  e.stopPropagation();
+  document.getElementById('spName').textContent=name;
+  document.querySelectorAll('.sdi').forEach(i=>i.classList.remove('active-school'));
+  el.classList.add('active-school');
+  document.getElementById('schoolDD').classList.remove('open');
+  document.getElementById('schoolPicker').classList.remove('is-open');
+  toast('Switched to '+name);
+}
+
+// ══ VIEWS ══
+function switchView(view,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-'+view).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ══ TOAST ══
+function toast(msg){
+  const c=document.getElementById('tc');
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;c.appendChild(t);
+  setTimeout(()=>{t.style.animation='toastOut .25s ease forwards';setTimeout(()=>t.remove(),250);},2800);
+}
+
+// ══ STUDENT ══
+function renderCats(){
+  document.getElementById('catBar').innerHTML=CATS.map(c=>`
+    <div class="cat-tab${c.id===activeCat?' active':''}" onclick="switchCat('${c.id}')">
+      <span class="cat-emoji">${c.emoji}</span>
+      <span class="cat-label">${c.label}</span>
+    </div>`).join('');
+}
+function switchCat(id){activeCat=id;renderCats();renderProducts();}
+function renderProducts(){
+  const el=document.getElementById('productList');
+  el.innerHTML=(PRODUCTS[activeCat]||[]).map(item=>{
+    const inCart=!!cart[item.id];
+    const sz=selSizes[item.id]||'';
+    const note=notes[item.id]||'';
+    const sizesHtml=item.sizes?`<div class="size-chips">${item.sizes.map(s=>`<button class="size-chip${sz===s?' selected':''}" onclick="pickSize('${item.id}','${s}')">${s}</button>`).join('')}</div>`:'';
+    const ph=item.np||'Add a note (optional)...';
+    return `<div class="product-card">
+      <div class="product-info">
+        <div class="product-name">${item.name}</div>
+        <div class="product-desc">${item.desc}</div>
+        ${sizesHtml}
+        <textarea class="product-notes" rows="2" placeholder="${ph}" oninput="saveNote('${item.id}',this.value)">${note}</textarea>
+      </div>
+      <button class="add-btn${inCart?' added':''}" id="btn-${item.id}" onclick="addItem('${item.id}')">${inCart?'✓ Added':'+Add'}</button>
+    </div>`;
+  }).join('');
+}
+function pickSize(k,s){selSizes[k]=s;renderProducts();}
+function saveNote(k,v){notes[k]=v;}
+function addItem(k){
+  const item=[...Object.values(PRODUCTS)].flat().find(i=>i.id===k);
+  if(!item)return;
+  if(item.sizes&&item.sizes.length&&!selSizes[k]){
+    const btn=document.getElementById('btn-'+k);
+    if(btn){btn.textContent='Pick a size!';btn.classList.add('error');btn.disabled=true;
+      setTimeout(()=>{btn.textContent='+Add';btn.classList.remove('error');btn.disabled=false;},1800);}
+    toast('Please select a size first');return;
+  }
+  if(cart[k]){delete cart[k];toast(item.name+' removed from order');}
+  else{cart[k]=item;toast(item.name+' added to your order');}
+  updateBadge();renderProducts();
+}
+function updateBadge(){
+  const n=Object.keys(cart).length;
+  document.getElementById('cartBadge').textContent=n+' ITEM'+(n!==1?'S':'');
+}
+function openModal(){
+  const items=Object.entries(cart);
+  if(!items.length){toast('Add some items first');return;}
+  document.getElementById('modalItems').innerHTML=items.map(([k,item])=>{
+    const sz=selSizes[k]?` (${selSizes[k]})`:'';
+    const note=notes[k]?`<div class="modal-item-note">📝 ${notes[k]}</div>`:'';
+    return `<div class="modal-item"><div class="modal-dot"></div><div><div class="modal-item-name">${item.name}${sz}</div>${note}</div></div>`;
+  }).join('');
+  document.getElementById('orderModal').classList.add('open');
+}
+function closeModal(){document.getElementById('orderModal').classList.remove('open');}
+function submitOrder(){
+  cart={};selSizes={};notes={};updateBadge();closeModal();renderProducts();
+  toast('Order submitted! Your items will be ready soon.');
+}
+
+// ══ STAFF ══
+function renderActivity(){
+  document.getElementById('activityLog').innerHTML=actLog.map(e=>{
+    const m=Math.floor((Date.now()-e.time)/60000);
+    const t=m<1?'just now':m<60?m+'m ago':Math.floor(m/60)+'h ago';
+    return `<div class="activity-item"><div class="activity-dot ${e.action}"></div><div class="activity-text"><strong>${e.item}</strong> — ${e.action==='out'?'taken out':'restocked'}</div><div class="activity-time">${t}</div></div>`;
+  }).join('');
+}
+function simulateScan(){
+  const items=['Granola bars','Deodorant','T-shirt (M)','Water bottle','Notebook','First aid kit'];
+  const item=items[Math.floor(Math.random()*items.length)];
+  actLog.unshift({item,action:'out',time:Date.now()});
+  if(actLog.length>6)actLog.pop();
+  renderActivity();toast('Scanned: '+item+' logged as taken out');
+}
+function logItem(){
+  const name=document.getElementById('manualItem').value.trim();
+  const action=document.getElementById('manualAction').value;
+  if(!name){toast('Enter an item name');return;}
+  actLog.unshift({item:name,action,time:Date.now()});
+  if(actLog.length>6)actLog.pop();
+  document.getElementById('manualItem').value='';
+  renderActivity();toast('Logged: '+name);
+}
+function renderOrders(){
+  document.getElementById('ordersList').innerHTML=ORDERS.map((o,i)=>{
+    const done=orderStatuses[i]==='fulfilled';
+    return `<div class="order-row-staff">
+      <div style="flex:1"><div class="order-id">${o.id}</div><div class="order-items-text">${o.items}</div></div>
+      <span class="order-status ${done?'os-fulfilled':'os-pending'}">${done?'Fulfilled':'Pending'}</span>
+      <button class="fulfill-btn${done?' done':''}" onclick="fulfillOrder(${i})" ${done?'disabled':''}>
+        ${done?'✓ Done':'Fulfill'}
+      </button>
+    </div>`;
+  }).join('');
+}
+function fulfillOrder(i){orderStatuses[i]='fulfilled';renderOrders();toast('Order marked as fulfilled');}
+function renderInv(school){
+  const catColors={snacks:'#FF9E1B',essentials:'#32BCAD',health:'#D0006F',clothing:'#642F6C',supplies:'#003865'};
+  const sMap={monarch:'Monarch High',riverside:'Riverside Secondary',eastview:'Eastview Academy'};
+  const rows=school&&school!=='all'?INVENTORY.filter(r=>r.school===sMap[school]):INVENTORY;
+  document.getElementById('invBody').innerHTML=rows.map(r=>`<tr>
+    <td><strong>${r.item}</strong></td>
+    <td><span class="cat-dot" style="background:${catColors[r.cat]||'#888'}"></span>${r.cat.charAt(0).toUpperCase()+r.cat.slice(1)}</td>
+    <td style="font-size:12px;color:#aaa">${r.school}</td>
+    <td><strong>${r.qty}</strong></td>
+    <td><span class="stock-badge s-${r.status}">${r.status.charAt(0).toUpperCase()+r.status.slice(1)}</span></td>
+    <td style="font-size:12px;color:#aaa">${r.last}</td>
+    <td><button class="restock-btn" onclick="toast('Restock request sent to Uth HQ for ${r.item}')">Request restock</button></td>
+  </tr>`).join('');
+}
+function setStaffSchool(btn,school){
+  staffSchool=school;
+  document.querySelectorAll('#view-staff .filter-row .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');renderInv(school);
+}
+
+// ══ ADMIN ══
+function renderChart(id,data,fallback){
+  const max=Math.max(...data.map(d=>d.v),1);
+  document.getElementById(id).innerHTML=data.map(d=>`
+    <div class="bar-row">
+      <div class="bar-label">${d.l}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(d.v/max*100)}%;background:${d.c||fallback||'#003865'}"></div></div>
+      <div class="bar-val">${d.v}</div>
+    </div>`).join('');
+}
+function renderSchools(data){
+  const max=Math.max(...data.map(d=>d.v),1);
+  document.getElementById('schoolsBody').innerHTML=data.map(d=>`<tr>
+    <td>${d.n}</td><td><strong>${d.v}</strong></td>
+    <td><div class="mini-bar"><div class="mini-bar-fill" style="width:${Math.round(d.v/max*100)}%"></div></div></td>
+  </tr>`).join('');
+}
+function getAdminData(){
+  const base=CHART_DATA[curTime]||CHART_DATA.all;
+  if(adminSchool==='all')return base;
+  const sMap={monarch:'Monarch High',riverside:'Riverside Secondary',eastview:'Eastview Academy'};
+  const sn=sMap[adminSchool];
+  const sr=base.schools.filter(s=>s.n===sn);
+  const total=base.schools.reduce((a,s)=>a+s.v,0);
+  const sc=sr.length&&total?sr[0].v/total:1;
+  return{categories:base.categories.map(x=>({...x,v:Math.round(x.v*sc)})),sizes:base.sizes.map(x=>({...x,v:Math.round(x.v*sc)})),monthly:base.monthly.map(x=>({...x,v:Math.round(x.v*sc)})),schools:sr};
+}
+function renderAdminCharts(){
+  const d=getAdminData();
+  renderChart('chartCat',d.categories);
+  renderChart('chartSizes',d.sizes,'#642F6C');
+  renderChart('chartMonthly',d.monthly,'#003865');
+  renderSchools(d.schools);
+}
+function setAdminSchool(btn,school){
+  adminSchool=school;
+  const fr=btn.closest('.filter-row');
+  fr.querySelectorAll('.filter-btn').forEach(b=>{if((b.getAttribute('onclick')||'').includes('setAdminSchool'))b.classList.remove('active');});
+  btn.classList.add('active');renderAdminCharts();
+}
+function setTime(btn,t){
+  curTime=t;
+  const fr=btn.closest('.filter-row');
+  fr.querySelectorAll('.filter-btn').forEach(b=>{if((b.getAttribute('onclick')||'').includes('setTime'))b.classList.remove('active');});
+  btn.classList.add('active');renderAdminCharts();
+}
+
+// ══ INIT ══
+renderCats();renderProducts();renderActivity();renderOrders();renderInv();renderAdminCharts();
+</script>
+</body>
+</html>

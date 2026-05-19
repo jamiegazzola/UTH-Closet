@@ -1,0 +1,175 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── helpers ───────────────────────────────────────────────────────────────
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return request.auth.uid == uid;
+    }
+
+    // Reads role from the user's Firestore doc (your existing pattern)
+    function userDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function role() {
+      return userDoc().role;
+    }
+
+    function mySchoolId() {
+      return userDoc().schoolId;
+    }
+
+    function isStudent()   { return isSignedIn() && role() == 'student'; }
+    function isStaff()     { return isSignedIn() && role() == 'staff'; }
+    function isAdmin()     { return isSignedIn() && role() == 'admin'; }
+    function isCorporate() { return isSignedIn() && role() == 'corporate'; }
+
+    function isStaffOrAdmin() { return isStaff() || isAdmin(); }
+
+    // Staff can only touch documents belonging to their own school
+    function isOwnSchool(docSchoolId) {
+      return mySchoolId() == docSchoolId;
+    }
+
+    // ── users ─────────────────────────────────────────────────────────────────
+    match /users/{userId} {
+      // Anyone can read their own profile
+      allow read: if isSignedIn() && isOwner(userId);
+
+      // Staff and admin can read any user profile (needed for dashboard lookups)
+      allow read: if isSignedIn() && isStaffOrAdmin();
+
+      // New users can create their own profile on signup
+      allow create: if isSignedIn() && isOwner(userId);
+
+      // !! CRITICAL FIX:
+      // Users can update their own profile BUT cannot change their role or schoolId.
+      // Only admins can change role or schoolId.
+      allow update: if isSignedIn() && isOwner(userId)
+        && !('role'     in request.resource.data.diff(resource.data).affectedKeys())
+        && !('schoolId' in request.resource.data.diff(resource.data).affectedKeys());
+
+      // Only admins can assign/change roles and school assignments
+      allow update: if isSignedIn() && isAdmin();
+
+      allow delete: if isSignedIn() && isAdmin();
+    }
+
+    // ── orders ────────────────────────────────────────────────────────────────
+    match /orders/{orderId} {
+      // Students can create orders for their own school only.
+      // They cannot pre-set status to anything other than 'pending'.
+      allow create: if isSignedIn()
+        && isStudent()
+        && request.resource.data.userId   == request.auth.uid
+        && request.resource.data.schoolId == mySchoolId()
+        && request.resource.data.status   == 'pending';
+
+      // Students can only read their own orders
+      allow read: if isSignedIn() && isStudent()
+        && resource.data.userId == request.auth.uid;
+
+      // Staff can read orders from their school only
+      allow read: if isStaff() && isOwnSchool(resource.data.schoolId);
+
+      // Admins can read all orders
+      allow read: if isAdmin();
+
+      // Corporate sees nothing in orders (privacy)
+      // (no rule = denied)
+
+      // Staff can update order status for their school only
+      allow update: if isStaff() && isOwnSchool(resource.data.schoolId);
+
+      // Admins can update any order
+      allow update: if isAdmin();
+
+      // Students can cancel (delete) their own pending orders only
+      allow delete: if isSignedIn() && isStudent()
+        && resource.data.userId == request.auth.uid
+        && resource.data.status == 'pending';
+
+      // Admins can delete any order
+      allow delete: if isAdmin();
+    }
+
+    // ── activity_log ──────────────────────────────────────────────────────────
+    match /activity_log/{logId} {
+      // Staff can log activity for their own school only
+      allow create: if isStaff()
+        && request.resource.data.schoolId == mySchoolId();
+
+      // Staff can read activity for their own school only
+      allow read: if isStaff() && isOwnSchool(resource.data.schoolId);
+
+      // Admins can read and write all activity
+      allow read, create: if isAdmin();
+
+      // Only admins can edit or delete log entries
+      allow update, delete: if isAdmin();
+
+      // Corporate sees nothing in raw activity logs
+    }
+
+    // ── inventory ─────────────────────────────────────────────────────────────
+    match /inventory/{itemId} {
+      // Staff can read and update inventory for their school only
+      allow read:   if isStaff() && isOwnSchool(resource.data.schoolId);
+      allow update: if isStaff() && isOwnSchool(resource.data.schoolId);
+
+      // Admins have full access
+      allow read, write: if isAdmin();
+
+      // Corporate can read aggregate/category-level inventory (not school-specific)
+      // Only allow if the document has no schoolId (i.e. it's a category aggregate)
+      allow read: if isCorporate() && !('schoolId' in resource.data);
+    }
+
+    // ── restock_requests ──────────────────────────────────────────────────────
+    match /restock_requests/{reqId} {
+      // Staff can create restock requests for their own school
+      allow create: if isStaff()
+        && request.resource.data.schoolId == mySchoolId();
+
+      // Staff can read requests from their own school
+      allow read: if isStaff() && isOwnSchool(resource.data.schoolId);
+
+      // Admins have full access
+      allow read, write: if isAdmin();
+
+      // Corporate can read restock requests (so they know what's needed)
+      // but cannot create, update, or delete them
+      allow read: if isCorporate();
+    }
+
+    // ── corporate_stats (aggregated only — no raw order/student data) ─────────
+    // These documents should be pre-aggregated by Cloud Functions.
+    // Corporate partners never touch raw collections.
+    match /corporate_stats/{statId} {
+      allow read:  if isCorporate() || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // ── schools ───────────────────────────────────────────────────────────────
+    match /schools/{schoolId} {
+      // Staff can read their own school's info
+      allow read: if isStaff() && schoolId == mySchoolId();
+
+      // Admins have full access
+      allow read, write: if isAdmin();
+
+      // Students can read school list (needed for signup dropdown)
+      allow read: if isStudent();
+    }
+
+    // ── catch-all: deny everything not explicitly covered above ───────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
